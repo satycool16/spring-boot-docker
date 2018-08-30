@@ -1,4 +1,4 @@
-FROM alpine/git as clone
+FROM alpine/git
 ARG url
 WORKDIR /app
 RUN git clone ${url}

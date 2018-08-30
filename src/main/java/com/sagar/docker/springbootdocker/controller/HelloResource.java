@@ -1,4 +1,4 @@
-package com.sagar.docker.springbootdocker.resource;
+package com.sagar.docker.springbootdocker.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloResource {
     @GetMapping
     public String hello(){
-        return "Hello World, This change is from git hub";
+        return "Changes Hello World, This change is from git hub";
     }
 }
+
+
+
