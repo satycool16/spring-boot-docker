@@ -1,8 +1,50 @@
 https://codefresh.io/docker-tutorial/java_docker_pipeline/
 
+git docker bug
+https://forums.docker.com/t/best-practices-for-getting-code-into-a-container-git-clone-vs-copy-vs-data-container/4077
 
 
 #####################################################################################################################################################################
+v2.0
+
+FROM maven:3.5-jdk-8-alpine as build
+ENV SAG_HOME=/usr/local/sagjain/
+RUN mkdir -p $SAG_HOME
+WORKDIR $SAG_HOME
+
+ADD pom.xml $SAG_HOME
+RUN ["mvn","verify","clean","--fail-never"]
+ADD . $SAG_HOME
+RUN mvn verify
+EXPOSE 8080
+CMD java -jar $SAG_HOME/target/docker-spring-boot.jar
+
+#####################################################################################################################################################################
+v1.2
+
+FROM ubuntu as clone
+RUN apt-get update \
+    && apt-get install -y git
+ARG url
+WORKDIR /app
+RUN git clone ${url}
+
+FROM maven:3.5-jdk-8-alpine as build
+ARG project
+WORKDIR /app
+COPY --from=clone /app/${project} /app
+RUN mvn install
+
+FROM openjdk:8-jre-alpine
+WORKDIR /app
+COPY --from=build /app/target/docker-spring-boot.jar /app
+EXPOSE 8080
+CMD java -jar docker-spring-boot.jar
+#####################################################################################################################################################################
+
+#####################################################################################################################################################################
+v1.1
+
 FROM alpine/git as clone
 ARG url
 WORKDIR /app
@@ -26,3 +68,5 @@ FROM openjdk:8
 ADD target/docker-spring-boot.jar /usr/src/spring-boot-docker/docker-spring-boot.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar", "/usr/src/spring-boot-docker/docker-spring-boot.jar"]
+#####################################################################################################################################################################
+
