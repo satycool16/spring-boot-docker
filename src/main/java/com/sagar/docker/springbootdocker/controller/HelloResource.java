@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloResource {
     @GetMapping
     public String hello(){
-        return "Changes Hello World, This change is from git hub";
+        return "Hello World, This change is from git hub";
     }
 }
 
