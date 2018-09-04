@@ -19,7 +19,7 @@ WORKDIR /app
 COPY --from=build /app/target/docker-spring-boot.jar /app
 EXPOSE 8080
 CMD java -jar docker-spring-boot.jar
-
+photos
 
 #####################################################################################################################################################################
 FROM openjdk:8
